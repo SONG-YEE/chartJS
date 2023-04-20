@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+    <style>
+        .title {
+            background-color: rgb(204, 192, 218);
+            width: 150px;
+
+        }
+
+        h4 {
+            text-align: center;
+            padding: 5px 5px 5px;
+            font-size: small;
+            font-weight: 500;
+            
+        }
+
+        .chart-chartjs {
+            margin-top: 70px;
+
+        }
+
+        .firstChart-wrap, secondChart {
+            width: 45em;
+
+        }
+        .container {
+  margin: 2rem;
+}
+
+#tabs {
+  list-style-type: none;
+}
+#tabs li {
+  display: inline-block;
+  margin-bottom: -1px;
+}
+#tabs li a {
+  display: block;
+  height: 100%;
+  padding: 10px;
+  border-radius: 4px 4px 0 0;
+  border: 1px solid;
+  border-color: #ccc #ccc transparent;
+  text-align: center;
+}
+#tabs li:hover a, #tabs li.active a {
+  background-color: #efefef;
+}
+
+#tab-contents {
+  border: 1px solid #ccc;
+  background-color: #efefef;
+}
+#tab-contents .tab-contents {
+  padding: 10px;
+  display: none;
+}
+#tab-contents .tab-contents.active {
+  display: block;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="title">
+        <h4>Vinss Academy</h4>
+    </div>
+
+    <div class="chart-chartjs">
+        <div class="firstChart-wrap">
+            <h6>□ 학년별 평균 시험 점수</h6>
+            <div class="firstChart">
+                <canvas id="myChart"></canvas>
+            </div>
+
+        </div>
+        <!-- <div class="secondChart-wrap">
+            <h6>□ 학년별 학생 목록</h6>
+            <div class="secondChart">
+                <ul class="tab-list">
+                    <li class="tab-list-grade" data-list="1">10학년</li>
+                    <li class="tab-list-grade active" data-list="2">11학년</li>
+                    <li class="tab-list-grade" data-list="3">12학년</li>
+                </ul>
+                <div class="tab-contents" data-order="1">10학년입니다</div>
+                <div class="tab-contents show" data-order="2">11학년입니다</div>
+                <div class="tab-contents" data-order="3">12학년입니다</div>
+            </div>
+        </div> -->
+
+    <!-- </div> -->
+
+
+    <div class="container">
+        <nav id="tabs">
+          <li class="active"><a href="#tab1">Tab 1</a></li>
+          <li><a href="#tab2">Tab 2</a></li>
+          <li><a href="#tab3">Tab 3</a></li>
+        </nav>
+        
+        <section id="tab-contents">
+          <div id="tab1" class="tab-contents active">
+            <p>These are the contents of tab 1.</p>
+          </div>
+          <div id="tab2" class="tab-contents">
+            <p>These are the contents of tab 2.</p>
+          </div>
+          <div id="tab3" class="tab-contents">
+            <p>These are the contents of tab 3.</p>
+          </div>
+        </section>
+      </div>
+    <script src="/chart.js"></script>
+</body>
+
+</html>
