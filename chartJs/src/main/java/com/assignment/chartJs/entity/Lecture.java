@@ -7,6 +7,7 @@ import lombok.*;
 @Builder
 @Data
 @Entity
+@Table(name="Lecture")
 public class Lecture {
 	
 	@Id
