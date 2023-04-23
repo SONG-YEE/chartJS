@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.assignment.chartJs.entity.Student;
@@ -14,12 +15,18 @@ import com.assignment.chartJs.repository.StudentRepository;
 
 @Service
 public class ChartJsService {
-
-	private LectureRepository lectureRepository;
 	
-	private ScoreRepository scoreRepository;
+	@Autowired
+	private final StudentRepository studentRepository;
 	
-	private StudentRepository studentRepository;
-	
-	 
+	@Autowired
+    public ChartJsService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+    
+    public List<Object[]> getStudentsByLevel(byte level) {
+        return studentRepository.getStudentsByLevel(level);
+    }
+    
+    
 }
