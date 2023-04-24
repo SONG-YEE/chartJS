@@ -22,10 +22,10 @@ public class ChartJsController {
 	@Autowired
 	private ChartJsService chartJsService;
 	
-	@Autowired
-	public ChartJsController(ChartJsService chartJsService) {
-      this.chartJsService = chartJsService;
-	}
+//	@Autowired
+//	public ChartJsController(ChartJsService chartJsService) {
+//      this.chartJsService = chartJsService;
+//	}
 	
 	@Autowired
 	private StudentRepository studentRepository;
@@ -35,9 +35,9 @@ public class ChartJsController {
 //		return "index";
 //	}
 	
-//	@GetMapping("/students/{level}")
-//	public List<Object[]> getStudents(@PathVariable byte level) {
-//		return chartJsService.getStudentsByLevel(level);
+//	@GetMapping("/students")
+//	public List<Student[]> getStudents(@PathVariable byte level) {
+//		return studentRepository.getStudentsByLevel(level);
 //	}
 	
 
@@ -46,10 +46,14 @@ public class ChartJsController {
 //	    return chartJsService.getStudentsByLevel(level);
 //	}
 	
-	@GetMapping("/students")
-    public List<Student> getStudents() {
-        return studentRepository.findAll();
-    }
+//	@GetMapping("/students")
+//    public List<Student> getStudents() {
+//        return studentRepository.findAll();
+//    }
+	
+	public List<Student> abc() {
+		return chartJsService.selectStu();
+	}
 	
 //	public String getStudents(Model model) {
 //		List<Object[]> students10 = chartJsService.getStudentsByLevel((byte)10);
