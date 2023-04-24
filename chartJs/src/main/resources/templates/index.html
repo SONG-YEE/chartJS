@@ -212,8 +212,8 @@
 
     <script src="/chart.js"></script>
 
-    <div id="app"></div>
-    <!-- <script>
+    <div id="app"></div> -->
+    <script>
       const level = 10;
 
 fetch(`http://localhost:8080/students/${level}`)
@@ -221,19 +221,23 @@ fetch(`http://localhost:8080/students/${level}`)
   .then(data => {
     const app = document.getElementById('app');
     const ul = document.createElement('ul');
-    if (!data || !Array.isArray(data) || data.length === 0) {
-      console.log("null");
-      return;
+
+    // Check if data is an array, and convert it if not
+    if (!Array.isArray(data)) {
+      data = Array.from(data);
     }
+
+    // Iterate over the array to create list items
     data.forEach(student => {
       const li = document.createElement('li');
-      li.textContent = `${student[0]} (${student[1]})`;
+      li.textContent = `${student.name} (${student.gender})`;
       ul.appendChild(li);
     });
+
     app.appendChild(ul);
   })
   .catch(error => console.error(error));
-    </script> -->
+    </script>
 
     <!--<script>
       fetch('http://localhost:8080/students/10')
@@ -266,11 +270,11 @@ fetch(`http://localhost:8080/students/${level}`)
 		})
 		tab1.appendChild()
 	</script>-->
-	<script>
+	<!-- <script>
 	fetch('http://localhost:8080/students')
   .then(response => response.json())
   .then(data => console.log(data))
-  .catch(error => console.error(error));
+  .catch(error => console.error(error)); -->
 </script>
 </body>
 </html>
