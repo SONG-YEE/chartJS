@@ -143,4 +143,3 @@ tabLabels.forEach(function(label, index){
   label.addEventListener("click", activateTab);
 
 });
-
