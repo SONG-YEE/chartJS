@@ -1,0 +1,25 @@
+package com.assignment.chartJs.dto;
+
+public class StudentDTO {
+	
+	private Long seq;
+    private String name;
+    private String gender;
+    private Byte level;
+    private String track;
+    private String title;
+    private Integer value;
+
+    
+    public StudentDTO (Long seq, String name, String gender, Byte level, String track, String title, Integer value) {
+        this.seq = seq;
+        this.name = name;
+        this.gender = gender;
+        this.level = level;
+        this.track = track;
+        this.title = title;
+        this.value = value;
+        
+    }
+
+}
