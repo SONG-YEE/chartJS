@@ -28,7 +28,6 @@ dependencies {
 	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 	// https://mvnrepository.com/artifact/com.zaxxer/HikariCP
 	implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
-	
 }
 
 tasks.named('test') {
