@@ -1,53 +1,48 @@
 package com.assignment.chartJs.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import com.assignment.chartJs.entity.Student;
-import com.assignment.chartJs.repository.LectureRepository;
-import com.assignment.chartJs.repository.ScoreRepository;
 import com.assignment.chartJs.repository.StudentRepository;
+import com.assignment.chartJs.dto.StudentDTO;
 
 @Service
 public class ChartJsService {
-	
+
 	@Autowired
-	private final StudentRepository studentRepository;
+	private StudentRepository studentRepository;
 	
 	@Autowired
     public ChartJsService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
-    
-//    public List<Student[]> getStudentsByLevel(byte level) {
-//    	System.out.println("안찍힘");
-//    	System.err.println("안찍힘");
-//        return studentRepository.getStudentsByLevel(level);
-//    }
 	
-	@GetMapping("/students")
-	public List<Student> selectStu() {
-		List<Student> stu = studentRepository.findAll();
-		return stu;
+	
+	public String getStudentsByLevel(byte level) {
+
+		List<Object[]> students = studentRepository.getStudentsByLevel(level);
+		List<StudentDTO> studentDTOs = new ArrayList<>();
+		
+		for (Object[] student : students) {
+			Long seq = (Long) student[0];
+			String name = (String) student[1];
+			String gender = (String) student[2];
+			Byte studentLevel = (Byte) student[3];
+			String track = (String) student[4];
+			String title = (String) student[5];
+			Integer value = (Integer) student[6];
+			StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, track, title, value);
+			studentDTOs.add(studentDTO);
+		}
+		
+		String result = studentDTOs.toString();
+		
+		return result;
+		
 	}
-	
-	
-//	public void testGetStudentByGrade() {
-//        List<Object[]> resultList = studentRepository.getStudentsByLevel((byte) 10);
-//        System.out.println("출력 안됨");
-//        for(Object[] row : resultList) {
-//        	
-//        }
-//    }
-	 
+
 }
