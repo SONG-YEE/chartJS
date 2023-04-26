@@ -129,9 +129,9 @@
         <h6>□ 학년별 학생 목록</h6>
 
         <nav id="tabs">
-          <li class="active"><a href="#tab1">Tab 1</a></li>
-          <li><a href="#tab2">Tab 2</a></li>
-          <li><a href="#tab3">Tab 3</a></li>
+          <li class="active"><a href="#tab1">10학년</a></li>
+          <li><a href="#tab2">11학년</a></li>
+          <li><a href="#tab3">12학년</a></li>
         </nav>
 
         <section id="tab-contents">
@@ -210,36 +210,81 @@
           
       </div>
 
-    <script src="/chart.js"></script>
+    <script src="/src/main/resources/static/chart.js"></script>
 
-    <div id="app"></div> -->
     <script>
-      const level = 10;
+		
+			
+        // getLvByTab();
+		
+        function getLvByTab() {
+            const btnTabList = document.querySelectorAll(".btn-tab");
+            btnTabList.forEach(element => {
+                element.addEventListener("click", function() {
+                    getLv(element.dataset.level);
+                });
+            });
 
-fetch(`http://localhost:8080/students/${level}`)
-  .then(response => response.json())
-  .then(data => {
-    const app = document.getElementById('app');
-    const ul = document.createElement('ul');
+        }
+		
+		function getLv(level){
 
-    // Check if data is an array, and convert it if not
-    if (!Array.isArray(data)) {
-      data = Array.from(data);
-    }
+			
+	        fetch(`http://localhost:8080/` + level, {
+                method: 'get'
+            })
+	        .then(response => response.json())
+	        .then(data => {
+	        const app = document.getElementById('app');
+	        const ul = document.createElement('ul');
+	        if (!data || !Array.isArray(data) || data.length === 0) {
+	        console.log("null");
+	        return;
+	        }
+	        data.forEach(student => {
+	        const li = document.createElement('li');
+	        li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
+	        ul.appendChild(li);
+	        });
+	        app.appendChild(ul);
+	    	})
+	      .catch(error => console.error(error));
+			
+			
+		};
 
-    // Iterate over the array to create list items
-    data.forEach(student => {
-      const li = document.createElement('li');
-      li.textContent = `${student.name} (${student.gender})`;
-      ul.appendChild(li);
-    });
-
-    app.appendChild(ul);
-  })
-  .catch(error => console.error(error));
     </script>
 
+    
+
+    <!-- 혹시 몰라서 남겨둔 코드
+        <script>
+            const level = 10;
+      
+            fetch(`http://localhost:8080/` + level)
+            .then(response => response.json())
+            .then(data => {
+             const app = document.getElementById('app');
+             const ul = document.createElement('ul');
+              if (!data || !Array.isArray(data) || data.length === 0) {
+              console.log("null");
+              return;
+              }
+              data.forEach(student => {
+              const li = document.createElement('li');
+              li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
+              ul.appendChild(li);
+              });
+              app.appendChild(ul);
+          })
+            .catch(error => console.error(error));
+          </script>
+    -->
+
     <!--<script>
+    
+    
+      .catch(error => console.error(error));
       fetch('http://localhost:8080/students/10')
         .then(response => response.json())
         .then(data => console.log(data))
@@ -250,6 +295,21 @@ fetch(`http://localhost:8080/students/${level}`)
         .then(data => console.log(data))
         .catch(error => console.error(error));
     
+		fetch('http://localhost:8080/students/${level}')
+  		.then((response) => response.json())
+  		.then((data) => {
+			  for (const product of data.products) {
+      const listItem = document.createElement("li");
+      listItem.appendChild(document.createElement("strong")).textContent =
+        product.Name;
+      listItem.append(` can be found in ${product.Location}. Cost: `);
+      listItem.appendChild(
+        document.createElement("strong")
+      ).textContent = `£${product.Price}`;
+      myList.appendChild(listItem);
+    }
+  })
+  .catch(console.error);
       fetch('http://localhost:8080/students/12')
         .then(response => response.json())
         .then(data => console.log(data))
@@ -274,7 +334,8 @@ fetch(`http://localhost:8080/students/${level}`)
 	fetch('http://localhost:8080/students')
   .then(response => response.json())
   .then(data => console.log(data))
-  .catch(error => console.error(error)); -->
-</script>
+  .catch(error => console.error(error)); 
+  
+</script>-->
 </body>
 </html>
