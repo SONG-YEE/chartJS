@@ -27,6 +27,7 @@
         h4 {
             text-align: center;
             padding: 5px 5px 5px;
+            margin-top: 20px;
             font-size: small;
             font-weight: 500;
 
@@ -217,6 +218,65 @@
     <script>
 		
     // chart.js 구현
+    // let chartData = {
+    //   labels: ['10학년', '11학년', '12학년'],
+    //   datasets: [
+    //     {
+    //       label:'4',
+    //       data:[0, 0, 0, 0],
+    //     },
+    //     {
+    //       label:'3',
+    //       data:[0, 0, 0, 0],
+    //     },
+    //     {
+    //       label:'2',
+    //       data:[0, 0, 0, 0],
+    //     },
+    //     {
+    //       label:'1',
+    //       data:[0, 0, 0, 0],
+    //     },
+    //   ],
+    // };
+
+    // let chartOptions = {
+
+    // };
+
+    // let chartAreat = document.getElementById('myChart').getContext('2d');
+    // const myChart = new Chart(chartAreat, {
+    //   type:'bar',
+    //   data: chartData,
+    //   options: chartOptions,
+    // });
+
+    // 데이터 받아오기
+    // fetch(`http://localhost:8080/chart/` + [[${level}]], {
+    //       method: 'get'
+    // })
+    // .then(function(response) {
+    // return response.json();
+    // })
+    // .then(function(data) {
+    // // 받아온 데이터를 가공해서 새로운 배열을 만듦
+    // let processedData1 = processData1(data);
+    // let processedData2 = processData2(data);
+    // let processedData3 = processData3(data);
+    // let processedData4 = processData4(data);
+
+    // // Chart.js 데이터에 가공한 데이터를 넣음
+    // myChart.data.datasets[0].data = processedData1;
+    // myChart.data.datasets[1].data = processedData2;
+    // myChart.data.datasets[2].data = processedData3;
+    // myChart.data.datasets[3].data = processedData4;
+
+    // // 차트를 업데이트함
+    // myChart.update();
+    // });
+
+
+
     let chartAreat = document.getElementById('myChart').getContext('2d');
 
     const myChart = new Chart(chartAreat, {
@@ -245,7 +305,7 @@
 
                 {
                     label: '',
-                    data: [20, 25, 30, 35, 40, 45],
+                    data: [20, 25, 30],
                     type: 'bar'
                 }
             ]
@@ -264,9 +324,12 @@
 
 
 
+
+
+
     // 학년별 학생 리스트 구현
-    var tabLabels = document.querySelectorAll("#tabs li");
-    var tabPanes = document.getElementsByClassName("tab-contents");
+    let tabLabels = document.querySelectorAll("#tabs li");
+    let tabPanes = document.getElementsByClassName("tab-contents");
 
     function activateTab(e) {
       e.preventDefault();
@@ -281,7 +344,7 @@
       
       // Activate current tab
       e.target.parentNode.classList.add("active");
-      var clickedTab = e.target.getAttribute("href");
+      let clickedTab = e.target.getAttribute("href");
       document.querySelector(clickedTab).classList.add("active");
     }
 
@@ -290,68 +353,91 @@
       label.addEventListener("click", activateTab);
     });
 			
-        // getLvByTab();
+
+    const level = 10;
+    fetch(`http://localhost:8080/tabList/` + level, {
+            method: 'get'
+        })
+      .then(response => response.json())
+      .then(data => {
+      const app = document.getElementById('app');
+      const ul = document.createElement('ul');
+      if (!data || !Array.isArray(data) || data.length === 0) {
+      console.log("null");
+      return;
+      }
+      data.forEach(student => {
+      const li = document.createElement('li');
+      li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
+      ul.appendChild(li);
+      });
+      app.appendChild(ul);
+      })
+      .catch(error => console.error(error));
+
+    // getLvByTab();
 		
-        function getLvByTab() {
-            const btnTabList = document.querySelectorAll(".btn-tab");
-            btnTabList.forEach(element => {
-                element.addEventListener("click", function() {
-                    getLv(element.dataset.level);
-                });
-            });
+    // function getLvByTab() {
+    //     const btnTabList = document.querySelectorAll(".btn-tab");
+    //     btnTabList.forEach(element => {
+    //         element.addEventListener("click", function() {
+    //             getLv(element.dataset.level);
+    //         });
+    //     });
 
-        }
+    // }
 		
-		function getLv(level){
+    // function getLv(level){
+
+  
+    //   fetch(`http://localhost:8080/tabList/` + level, {
+    //         method: 'get'
+    //     })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //   const app = document.getElementById('app');
+    //   const ul = document.createElement('ul');
+    //   if (!data || !Array.isArray(data) || data.length === 0) {
+    //   console.log("null");
+    //   return;
+    //   }
+    //   data.forEach(student => {
+    //   const li = document.createElement('li');
+    //   li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
+    //   ul.appendChild(li);
+    //   });
+    //   app.appendChild(ul);
+    //   })
+    //   .catch(error => console.error(error));
+  
+  
+    // };
+
+		    // function getAvg(level){
 
 			
-	        fetch(`http://localhost:8080/tabList` + level, {
-                method: 'get'
-            })
-	        .then(response => response.json())
-	        .then(data => {
-	        const app = document.getElementById('app');
-	        const ul = document.createElement('ul');
-	        if (!data || !Array.isArray(data) || data.length === 0) {
-	        console.log("null");
-	        return;
-	        }
-	        data.forEach(student => {
-	        const li = document.createElement('li');
-	        li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-	        ul.appendChild(li);
-	        });
-	        app.appendChild(ul);
-	    	})
-	      .catch(error => console.error(error));
+	      //   fetch(`http://localhost:8080/chart` + level, {
+        //         method: 'get'
+        //     })
+	      //   .then(response => response.json())
+	      //   .then(data => {
+	      //   const app = document.getElementById('app');
+	      //   const ul = document.createElement('ul');
+	      //   if (!data || !Array.isArray(data) || data.length === 0) {
+	      //   console.log("null");
+	      //   return;
+	      //   }
+	      //   data.forEach(student => {
+	      //   const li = document.createElement('li');
+	      //   li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
+	      //   ul.appendChild(li);
+	      //   });
+	      //   app.appendChild(ul);
+	    	//   })
+	      //   .catch(error => console.error(error));
 			
 			
-		};
-		function getAvg(level){
-
-			
-	        fetch(`http://localhost:8080/chart` + level, {
-                method: 'get'
-            })
-	        .then(response => response.json())
-	        .then(data => {
-	        const app = document.getElementById('app');
-	        const ul = document.createElement('ul');
-	        if (!data || !Array.isArray(data) || data.length === 0) {
-	        console.log("null");
-	        return;
-	        }
-	        data.forEach(student => {
-	        const li = document.createElement('li');
-	        li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-	        ul.appendChild(li);
-	        });
-	        app.appendChild(ul);
-	    	})
-	      .catch(error => console.error(error));
-			
-			
-		};
+		    // };
 
     </script>
 
