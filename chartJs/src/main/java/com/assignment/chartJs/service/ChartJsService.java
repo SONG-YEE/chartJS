@@ -64,13 +64,13 @@ public class ChartJsService {
 //		
 //	}
 	
-	public List<StudentDTO> getStudentsByLevel(byte level) {
+	public List<Object[]> getStudentsByLevel(byte level) {
 		
-		List<StudentDTO> students = studentRepository.getStudentsByLevels(level);
+		List<Object[]> students = studentRepository.getStudentsByLevel(level);
 		List<StudentDTO> studentDTOs = new ArrayList<>();
 		
 		int count = 0;
-		for (StudentDTO student : students) {
+		for (Object[] student : students) {
 			System.out.println(student.toString());
 			
 			count++;
@@ -90,7 +90,7 @@ public class ChartJsService {
 		
 		System.out.println("최종 배열 사이즈 : " + count);
 		
-		List<StudentDTO> result = students;
+		List<Object[]> result = students;
 		
 		return result;
 		
