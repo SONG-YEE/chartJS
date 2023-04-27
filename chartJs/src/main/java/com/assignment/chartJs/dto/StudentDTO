@@ -2,7 +2,7 @@ package com.assignment.chartJs.dto;
 
 public class StudentDTO {
 	
-	private Long seq;
+    private Long seq;
     private String name;
     private String gender;
     private Byte level;
