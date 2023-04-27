@@ -27,7 +27,7 @@ public class ChartJsController {
 //	}
 	
 	@GetMapping("/{level}")
-	public String getStudentsByLevel(@PathVariable byte level) {
+	public List<Object[]> getStudentsByLevel(@PathVariable byte level) {
 		
 		return chartJsService.getStudentsByLevel(level);
 	}
