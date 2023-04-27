@@ -1,54 +1,45 @@
-package com.assignment.chartJs.service;
-
+package com.assignment.chartJs.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import com.assignment.chartJs.entity.Student;
-import com.assignment.chartJs.repository.StudentRepository;
 import com.assignment.chartJs.dto.StudentDTO;
+import com.assignment.chartJs.entity.Student;
 
-@Service
-public class ChartJsService {
-
-	@Autowired
-	private StudentRepository studentRepository;
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Integer>{
 	
-	@Autowired
-    public ChartJsService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+		
+	@Query(value = "SELECT s.seq, s.name, s.gender, s.level, s.track, l.title, sc.value " +
+            	   "FROM Student s " +
+            	   "INNER JOIN Score sc ON s.seq = sc.student " +
+            	   "INNER JOIN Lecture l ON sc.lecture = l.seq " +
+            	   "WHERE s.level = :level " +
+            	   "GROUP BY s.name, s.gender, s.level, s.track, l.title, sc.value, s.seq " +
+            	   "ORDER BY s.track", nativeQuery = true)
+	public List<Object[]> getStudentsByLevel(@Param("level") byte level);
 	
 	
-	public List<Object[]> getStudentsByLevel(byte level) {
-
-		List<Object[]> students = studentRepository.getStudentsByLevel(level);
-//		List<StudentDTO> studentDTOs = new ArrayList<>();
-		
-		for (Object[] student : students) {
-			System.out.println(student[0]);
-			System.out.println(student[1]);
-			System.out.println(student[2]);
-			System.out.println(student[3]);
-			System.out.println(student[4]);
-			System.out.println(student[5]);
-//			Long seq = (Long) student[0];
-//			String name = (String) student[1];
-//			String gender = (String) student[2];
-//			Byte studentLevel = (Byte) student[3];
-//			String track = (String) student[4];
-//			String title = (String) student[5];
-//			Integer value = (Integer) student[6];
-//			StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, track, title, value);
-//			studentDTOs.add(studentDTO);
-		}
-		
-		List<Object[]> result = students;
-		
-		return result;
-		
+	default List<StudentDTO> getStudentsByLevels(byte level) {
+	    List<Object[]> records = getStudentsByLevel(level);
+	    List<StudentDTO> studentDTOs = new ArrayList<>();
+	    for (Object[] record : records) {
+	        int seq = (int) record[0];
+	        String name = (String) record[1];
+	        String gender = (String) record[2];
+	        Byte studentLevel = (Byte) record[3];
+	        Byte track = (Byte) record[4];
+	        String title = (String) record[5];
+	        Byte value = (Byte) record[6];
+	        StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, studentLevel, title, studentLevel);
+	        studentDTOs.add(studentDTO);
+	    }
+	    return studentDTOs;
 	}
-
+	
+	
 }
