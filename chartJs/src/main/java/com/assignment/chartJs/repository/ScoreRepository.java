@@ -7,30 +7,39 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.assignment.chartJs.dto.ScoreDTO;
 import com.assignment.chartJs.dto.StudentDTO;
-import com.assignment.chartJs.entity.Score;
+import com.assignment.chartJs.entity.Student;
 
 @Repository
-public interface ScoreRepository extends JpaRepository<Score, Integer>{
+public interface StudentRepository extends JpaRepository<Student, Integer>{
 	
-	@Query(value = "SELECT s.track, FLOOR(AVG(sc.value)) " +
-	   		   	   "FROM Score sc " +
-	   		   	   "JOIN Student s ON s.seq = sc.student " +
-	   		   	   "WHERE s.level = :level " +
-	   		   	   "GROUP BY s.track", nativeQuery = true)
-	public List<Object[]> getAvgByLevel(@Param("level") byte level);
-
+		
+	@Query(value = "SELECT s.seq, s.name, s.gender, s.level, s.track, l.title, sc.value " +
+            	   "FROM Student s " +
+            	   "INNER JOIN Score sc ON s.seq = sc.student " +
+            	   "INNER JOIN Lecture l ON sc.lecture = l.seq " +
+            	   "WHERE s.level = :level " +
+            	   "GROUP BY s.name, s.gender, s.level, s.track, l.title, sc.value, s.seq " +
+            	   "ORDER BY s.track", nativeQuery = true)
+	public List<Object[]> getStudentsByLevel(@Param("level") byte level);
 	
-	default List<ScoreDTO> getAvgByLevels(byte level) {
-	    List<Object[]> records = getAvgByLevel(level);
-	    List<ScoreDTO> scoreDTOs = new ArrayList<>();
+	
+	default List<StudentDTO> getStudentsByLevels(byte level) {
+	    List<Object[]> records = getStudentsByLevel(level);
+	    List<StudentDTO> studentDTOs = new ArrayList<>();
 	    for (Object[] record : records) {
-	        Byte track = (Byte) record[0];
-	        Byte value = (Byte) record[1];
-	        ScoreDTO scoreDTO = new ScoreDTO(track, value);
-	        scoreDTOs.add(scoreDTO);
+	        int seq = (int) record[0];
+	        String name = (String) record[1];
+	        String gender = (String) record[2];
+	        Byte studentLevel = (Byte) record[3];
+	        Byte track = (Byte) record[4];
+	        String title = (String) record[5];
+	        Byte value = (Byte) record[6];
+	        StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, track, title, value);
+	        studentDTOs.add(studentDTO);
 	    }
-	    return scoreDTOs;
+	    return studentDTOs;
 	}
+	
+	
 }
