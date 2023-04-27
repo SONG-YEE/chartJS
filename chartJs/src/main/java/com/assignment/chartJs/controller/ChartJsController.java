@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.assignment.chartJs.dto.ScoreDTO;
 import com.assignment.chartJs.dto.StudentDTO;
 import com.assignment.chartJs.repository.StudentRepository;
 import com.assignment.chartJs.service.ChartJsService;
@@ -26,12 +27,20 @@ public class ChartJsController {
 //		return "index";
 //	}
 	
-	@GetMapping("/{level}")
-	public List<Object[]> getStudentsByLevel(@PathVariable byte level) {
+	@GetMapping("tabList/{level}")
+	public List<StudentDTO> getStudentsByLevel(@PathVariable byte level) {
 		
 		return chartJsService.getStudentsByLevel(level);
+		
 	}
 	
+	@GetMapping("chart/{level}")
+	public List<Object[]> getAvg(@PathVariable byte level) {
+		
+		return chartJsService.getAvg(level);
+		
+	}
+
 	
 //	@GetMapping("/hello")
 //	public String getJson() {
