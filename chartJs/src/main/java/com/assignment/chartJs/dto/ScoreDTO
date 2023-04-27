@@ -1,0 +1,21 @@
+package com.assignment.chartJs.dto;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize
+public class ScoreDTO {
+	
+	private Byte track;
+	private	Byte value;
+	//private int student;
+	
+	
+	public ScoreDTO (Byte track, Byte value) {
+        this.track = track;
+        this.value = value;
+        
+    }
+	
+	
+	
+}
