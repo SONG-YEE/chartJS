@@ -1,17 +1,20 @@
 package com.assignment.chartJs.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonSerialize
 public class StudentDTO {
 	
-    private Long seq;
+	private int seq;
     private String name;
     private String gender;
     private Byte level;
-    private String track;
+    private Byte track;
     private String title;
-    private Integer value;
+    private Byte value;
 
     
-    public StudentDTO (Long seq, String name, String gender, Byte level, String track, String title, Integer value) {
+    public StudentDTO (int seq, String name, String gender, Byte level, Byte track, String title, Byte value) {
         this.seq = seq;
         this.name = name;
         this.gender = gender;
