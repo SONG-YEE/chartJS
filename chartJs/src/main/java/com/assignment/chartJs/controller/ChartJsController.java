@@ -28,14 +28,14 @@ public class ChartJsController {
 //	}
 	
 	@GetMapping("tabList/{level}")
-	public List<Object[]> getStudentsByLevel(@PathVariable byte level) {
+	public List<Object[]> getStudentsByLevel(@PathVariable("level") byte level) {
 		
 		return chartJsService.getStudentsByLevel(level);
 		
 	}
 	
 	@GetMapping("chart/{level}")
-	public List<Object[]> getAvg(@PathVariable byte level) {
+	public List<Object[]> getAvg(@PathVariable("level") byte level) {
 		
 		return chartJsService.getAvg(level);
 		
