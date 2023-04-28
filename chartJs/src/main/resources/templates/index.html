@@ -130,18 +130,28 @@
         <h6>□ 학년별 학생 목록</h6>
 
         <nav id="tabs">
-          <li class="active"><a href="#tab1">10학년</a></li>
-          <li><a href="#tab2">11학년</a></li>
-          <li><a href="#tab3">12학년</a></li>
+          <li data-level="10" class="active"><a href="#tab1">10학년</a></li>
+          <li data-level="11"><a href="#tab2">11학년</a></li>
+          <li data-level="12"><a href="#tab3">12학년</a></li>
         </nav>
 
         <section id="tab-contents">
           <div id="tab1" class="tab-contents active">
-            <p>These are the contents of tab 1.</p>
+            <div style="display: flex; justify-content: space-around;">
+              <div style="width: 5%;">No</div>
+              <div style="width: 14%;">Name</div>
+              <div style="width: 10%;">Gender</div>
+              <div style="width: 10%;">Level</div>
+              <div style="width: 5%;">Track</div>
+              <div style="width: 30%;">Lecture</div>
+              <div style="width: 14%;">Score</div>
+            </div>
+            <span class="contents"></span>
+            <!-- <p>These are the contents of tab 1.</p> -->
 
             <nav aria-label="paginationContainer">
               <ul class="pagination">
-                <li class="page-item">
+                <!-- <li class="page-item">
                   <a class="page-link" href="#" aria-label="Previous">
                     <span aria-hidden="true">◀</span>
                   </a>
@@ -154,12 +164,12 @@
                   <a class="page-link" href="#" aria-label="Next">
                     <span aria-hidden="true">▶</span>
                   </a>
-                </li>
+                </li> -->
               </ul>
             </nav>
           </div>
 
-          <div id="tab2" class="tab-contents">
+          <!-- <div id="tab2" class="tab-contents">
             <p>These are the contents of tab 2.</p>
 
             <nav aria-label="paginationContainer">
@@ -203,7 +213,7 @@
                 </li>
               </ul>
             </nav>
-          </div>
+          </div> -->
 
         </section>
 
@@ -251,31 +261,8 @@
     //   options: chartOptions,
     // });
 
-    // 데이터 받아오기
-    // fetch(`http://localhost:8080/chart/` + [[${level}]], {
-    //       method: 'get'
-    // })
-    // .then(function(response) {
-    // return response.json();
-    // })
-    // .then(function(data) {
-    // // 받아온 데이터를 가공해서 새로운 배열을 만듦
-    // let processedData1 = processData1(data);
-    // let processedData2 = processData2(data);
-    // let processedData3 = processData3(data);
-    // let processedData4 = processData4(data);
-
-    // // Chart.js 데이터에 가공한 데이터를 넣음
-    // myChart.data.datasets[0].data = processedData1;
-    // myChart.data.datasets[1].data = processedData2;
-    // myChart.data.datasets[2].data = processedData3;
-    // myChart.data.datasets[3].data = processedData4;
-
-    // // 차트를 업데이트함
-    // myChart.update();
-    // });
-
-
+    
+    
 
     let chartAreat = document.getElementById('myChart').getContext('2d');
 
@@ -287,6 +274,30 @@
             labels: ['10학년', '11학년', '12학년'],
             
             datasets: [
+                {
+                    label: '4',
+                    data: [10, 20, 30],
+                    type: 'bar'
+                },
+
+                {
+                    label: '3',
+                    data: [40, 50, 60],
+                    type: 'bar'
+                },
+
+                {
+                    label: '2',
+                    data: [70, 80, 90],
+                    type: 'bar'
+                },
+
+                {
+                    label: '1',
+                    data: [100, 110, 120],
+                    type: 'bar'
+                },
+
                 {
                     label: 'Parker',
                     data: [12, 19, 3, 5, 2, 4],
@@ -301,143 +312,211 @@
                     backgraoundColor: 'rgba(233, 93, 231, 2)',
                     borderColor: 'rgba(233, 93, 231, 2)',
                     borderWidth: 1
-                },
-
-                {
-                    label: '',
-                    data: [20, 25, 30],
-                    type: 'bar'
-                }
-            ]
-
-        },
-
-        options: {
-            scales: {
+                  }
+                ]
+              },
+              
+              options: {
+                scales: {
                 y: {
-                    //stacked: true,
+                  //stacked: true,
                     beginAtZero: true
+                  }
                 }
+              }
+            });
+            
+            
+            // myChart.data.datasets.forEach((dataset) => {
+            //   // dataset.data = [];
+            //   console.log(dataset);
+            // });
+            
+            getChartData();
+            async function getChartData() {
+              const grade10th = await getChartDataByLevel(10);
+              const grade11th = await getChartDataByLevel(11);
+              const grade12th = await getChartDataByLevel(12);
+              console.log("10학년" , grade10th)
+              console.log("11학년" , grade11th)
+              console.log("12학년" , grade12th)
+              myChart.data.datasets.forEach((dataset) => {
+                console.log("dataset", dataset)
+                console.log(':::LABEL:::', dataset.label)
+                switch(dataset.label) {
+                  case '4':
+                    dataset.data = [grade10th[3][1], grade11th[3][1], grade12th[3][1]]
+                    break;
+                  case '3':
+                    dataset.data = [grade10th[2][1], grade11th[2][1], grade12th[2][1]]
+                    break;
+                  case '2':
+                    dataset.data = [grade10th[1][1], grade11th[1][1], grade12th[1][1]]
+                    break;
+                  case '1':
+                    dataset.data = [grade10th[0][1], grade11th[0][1], grade12th[0][1]]
+                    break;
+                }
+                
+              });
+              myChart.update();
+              // [...grade10th].reverse()[0] + [...grade11th].reverse()[0] + [...grade12th].reverse()[0]
+              // [...grade10th].reverse()[1] + [...grade11th].reverse()[1] + [...grade12th].reverse()[1]
+              // [...grade10th].reverse()[2] + [...grade11th].reverse()[2] + [...grade12th].reverse()[2]
+              // [...grade10th].reverse()[3] + [...grade11th].reverse()[3] + [...grade12th].reverse()[3]
             }
+
+            async function getChartDataByLevel(level) {
+              const result = await fetch(`http://localhost:8080/chart/${level}`, {
+                  method: 'get'
+              })
+              const response = await result.json();
+              console.log(response)
+              return response;
+            }
+
+
+
+            // // 데이터 받아오기
+            // fetch(`http://localhost:8080/chart/`, {
+            //       method: 'get'
+            // })
+            // .then(function(response) {
+            // return response.json();
+            // })
+            // .then(function(data) {
+            // // 받아온 데이터를 가공해서 새로운 배열을 만듦
+            // let processedData1 = processData1(data);
+            // let processedData2 = processData2(data);
+            // let processedData3 = processData3(data);
+            // let processedData4 = processData4(data);
+        
+            // // Chart.js 데이터에 가공한 데이터를 넣음
+            // myChart.data.datasets[0].data = processedData1;
+            // myChart.data.datasets[1].data = processedData2;
+            // myChart.data.datasets[2].data = processedData3;
+            // myChart.data.datasets[3].data = processedData4;
+        
+            // // // 차트를 업데이트함
+            // myChart.update();
+            // });
+
+
+    // // 학년별 학생 리스트 구현
+    // let tabLabels = document.querySelectorAll("#tabs li");
+    // let tabPanes = document.getElementsByClassName("tab-contents");
+
+    const tabLabels = document.querySelectorAll("#tabs li");
+    tabLabels.forEach(function(element) {
+      element.addEventListener('click', function() {
+        tabLabels.forEach(element => element.classList.remove('active'));
+        element.classList.add('active')
+        fetchData(element.dataset.level)
+      });
+    })
+
+    // function activateTab(e) {
+    //   e.preventDefault();
+      
+    //   // Deactivate all tabs
+    //   tabLabels.forEach(function(label, index){
+    //     label.classList.remove("active");
+    //   });
+    //   // [].forEach.call(tabPanes, function(pane, index){
+    //   //   pane.classList.remove("active");
+    //   // });
+      
+    //   // Activate current tab
+    //   e.target.parentNode.classList.add("active");
+    //   let clickedTab = e.target.getAttribute("href");
+    //   document.querySelector(clickedTab).classList.add("active");
+    // }
+
+    // // Apply event listeners
+    // tabLabels.forEach(function(label, index){
+    //   label.addEventListener("click", activateTab);
+    // });
+			
+
+    fetchData(10);
+    async function fetchData(level) {
+      const result = await fetch(`http://localhost:8080/tabList/${level}`, {method: 'get'});
+      const response = await result.json();
+      const responseObject = response.map((v, i) => {
+        return {
+          // seq: v[0],
+          name: v[1],
+          gender: v[2],
+          level: v[3],
+          track: v[4],
+          title: v[5],
+          value: v[6],
+          page: Math.floor(i/5) + 1
         }
-    });
-
-
-
-
-
-
-    // 학년별 학생 리스트 구현
-    let tabLabels = document.querySelectorAll("#tabs li");
-    let tabPanes = document.getElementsByClassName("tab-contents");
-
-    function activateTab(e) {
-      e.preventDefault();
-      
-      // Deactivate all tabs
-      tabLabels.forEach(function(label, index){
-        label.classList.remove("active");
-      });
-      [].forEach.call(tabPanes, function(pane, index){
-        pane.classList.remove("active");
-      });
-      
-      // Activate current tab
-      e.target.parentNode.classList.add("active");
-      let clickedTab = e.target.getAttribute("href");
-      document.querySelector(clickedTab).classList.add("active");
+      })
+      console.log(responseObject)
+      const numberOfPages = responseObject.length%5 ? Math.floor(responseObject.length/5) + 1 : Math.floor(responseObject.length/5);
+      renderPagination(numberOfPages, responseObject)
+    }
+    
+    function renderPagination(numberOfPages, dataList) {
+      const paginationString = Array(numberOfPages).fill(null).map((v, i) => `<li class="page-item"><a class="page-link" href="#">${i + 1}</a></li>`).join('')
+      console.log(document.createRange().createContextualFragment(paginationString))
+      document.querySelector('.pagination').innerHTML = null;
+      document.querySelector('.pagination').appendChild(document.createRange().createContextualFragment(paginationString));
+      renderIntialData(dataList);
+      onClickButtonPagination(dataList);
     }
 
-    // Apply event listeners
-    tabLabels.forEach(function(label, index){
-      label.addEventListener("click", activateTab);
-    });
-			
-
-    const level = 10;
-    fetch(`http://localhost:8080/tabList/` + level, {
-            method: 'get'
+    function onClickButtonPagination(dataList) {
+      const pageList = document.querySelectorAll('.page-item');
+      pageList.forEach(function(element) {
+        element.addEventListener('click', function() {
+          const pageNumber = element.querySelector('.page-link').innerText;
+          renderData(pageNumber, dataList);
         })
-      .then(response => response.json())
-      .then(data => {
-      const app = document.getElementById('app');
-      const ul = document.createElement('ul');
-      if (!data || !Array.isArray(data) || data.length === 0) {
-      console.log("null");
-      return;
-      }
-      data.forEach(student => {
-      const li = document.createElement('li');
-      li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-      ul.appendChild(li);
       });
-      app.appendChild(ul);
-      })
-      .catch(error => console.error(error));
+    }
 
-    // getLvByTab();
-		
-    // function getLvByTab() {
-    //     const btnTabList = document.querySelectorAll(".btn-tab");
-    //     btnTabList.forEach(element => {
-    //         element.addEventListener("click", function() {
-    //             getLv(element.dataset.level);
-    //         });
-    //     });
+    function renderIntialData(dataList) {
+      const elementContents = document.querySelector('.contents');
+      const elementContentsString = dataList.filter((v, i) => v.page === 1).map(function(vv, ii) {
+        return `
+          <div style="display: flex; justify-content: space-around;">
+            <div style="width: 5%;">${ii + 1}</div>
+            <div style="width: 14%;">${vv.name}</div>
+            <div style="width: 10%;">${vv.gender}</div>
+            <div style="width: 10%;">${vv.level}</div>
+            <div style="width: 5%;">${vv.track}</div>
+            <div style="width: 30%;">${vv.title}</div>
+            <div style="width: 14%;">${vv.value}</div>
+          </div>
+        `;
+      }).join('');
+      elementContents.innerHTML = null;
+      elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
+    }
 
-    // }
-		
-    // function getLv(level){
-
-  
-    //   fetch(`http://localhost:8080/tabList/` + level, {
-    //         method: 'get'
-    //     })
-    //   .then(response => response.json())
-    //   .then(data => {
-    //   const app = document.getElementById('app');
-    //   const ul = document.createElement('ul');
-    //   if (!data || !Array.isArray(data) || data.length === 0) {
-    //   console.log("null");
-    //   return;
-    //   }
-    //   data.forEach(student => {
-    //   const li = document.createElement('li');
-    //   li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-    //   ul.appendChild(li);
-    //   });
-    //   app.appendChild(ul);
-    //   })
-    //   .catch(error => console.error(error));
-  
-  
-    // };
-
-		    // function getAvg(level){
-
-			
-	      //   fetch(`http://localhost:8080/chart` + level, {
-        //         method: 'get'
-        //     })
-	      //   .then(response => response.json())
-	      //   .then(data => {
-	      //   const app = document.getElementById('app');
-	      //   const ul = document.createElement('ul');
-	      //   if (!data || !Array.isArray(data) || data.length === 0) {
-	      //   console.log("null");
-	      //   return;
-	      //   }
-	      //   data.forEach(student => {
-	      //   const li = document.createElement('li');
-	      //   li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-	      //   ul.appendChild(li);
-	      //   });
-	      //   app.appendChild(ul);
-	    	//   })
-	      //   .catch(error => console.error(error));
-			
-			
-		    // };
+    function renderData(pageNumber, dataList) {
+      console.log('pageNumber', pageNumber)
+      const elementContents = document.querySelector('.contents');
+      const elementContentsString = dataList.filter((v, i) => v.page === Number(pageNumber)).map(function(vv, ii) {
+        return `
+          <div style="display: flex; justify-content: space-around;">
+            <div style="width: 5%;">${ii + 1}</div>
+            <div style="width: 14%;">${vv.name}</div>
+            <div style="width: 10%;">${vv.gender}</div>
+            <div style="width: 10%;">${vv.level}</div>
+            <div style="width: 5%;">${vv.track}</div>
+            <div style="width: 30%;">${vv.title}</div>
+            <div style="width: 14%;">${vv.value}</div>
+          </div>
+        `;
+      }).join('');
+      console.log(elementContentsString)
+      elementContents.innerHTML = null;
+      elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
+    }
 
     </script>
 
@@ -467,61 +546,6 @@
           </script>
     -->
 
-    <!--<script>
-    
-    
-      .catch(error => console.error(error));
-      fetch('http://localhost:8080/students/10')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-    
-      fetch('http://localhost:8080/students/11')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-    
-		fetch('http://localhost:8080/students/${level}')
-  		.then((response) => response.json())
-  		.then((data) => {
-			  for (const product of data.products) {
-      const listItem = document.createElement("li");
-      listItem.appendChild(document.createElement("strong")).textContent =
-        product.Name;
-      listItem.append(` can be found in ${product.Location}. Cost: `);
-      listItem.appendChild(
-        document.createElement("strong")
-      ).textContent = `£${product.Price}`;
-      myList.appendChild(listItem);
-    }
-  })
-  .catch(console.error);
-      fetch('http://localhost:8080/students/12')
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error(error));
-    </script>-->
-
-    <!--<script>
-		let data = []
-		fetch('url').then(response => {
-			data = response.data;
-		})
-		const tab1 = document.querySelector('tab1');
-		const nodeHTML;
-
-		data.forEach(function(data, index) {
-			const innerHTML = 
-			nodeHTML.append
-		})
-		tab1.appendChild()
-	</script>-->
-	<!-- <script>
-	fetch('http://localhost:8080/students')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error(error)); 
-  
-</script>-->
+   
 </body>
 </html>
