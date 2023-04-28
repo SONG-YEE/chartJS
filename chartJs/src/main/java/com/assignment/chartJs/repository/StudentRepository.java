@@ -35,7 +35,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer>{
 	        Byte track = (Byte) record[4];
 	        String title = (String) record[5];
 	        Byte value = (Byte) record[6];
-	        StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, studentLevel, title, studentLevel);
+	        StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, track, title, value);
 	        studentDTOs.add(studentDTO);
 	    }
 	    return studentDTOs;
