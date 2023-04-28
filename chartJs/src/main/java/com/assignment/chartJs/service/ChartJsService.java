@@ -71,7 +71,7 @@ public class ChartJsService {
 		
 		int count = 0;
 		for (Object[] student : students) {
-			System.out.println(student.toString());
+			//System.out.println(student.toString());
 			
 			count++;
 			
@@ -85,7 +85,7 @@ public class ChartJsService {
 //			StudentDTO studentDTO = new StudentDTO(seq, name, gender, studentLevel, track, title, value);
 //			studentDTOs.add(studentDTO);
 			
-			System.out.println(" ----------------배열사이즈-----------------> " + count);
+			//System.out.println(" ----------------배열사이즈-----------------> " + count);
 		}
 		
 		System.out.println("최종 배열 사이즈 : " + count);
@@ -103,11 +103,11 @@ public class ChartJsService {
 		
 		int count = 0;
 		for (Object[] sc : averageScore) {
-			System.out.println(sc.toString());
+			//System.out.println(sc.toString());
 			
 			count++;
 			
-			System.out.println("평균점수 뽑아내는 배열 사이즈 : " + count);
+			//System.out.println("평균점수 뽑아내는 배열 사이즈 : " + count);
 		}
 		
 		System.out.println("최종 배열 사이즈 : " + count);
