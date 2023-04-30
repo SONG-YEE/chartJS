@@ -116,5 +116,21 @@ public class ChartJsService {
 		
 		return result;
 	}
+	
+	public List<Object[]> getMaxAndMinValues() {
+		
+		List<Object[]> mmValues = scoreRepository.getMaxAndMinValues();
+		int count = 0;
+		for (Object[] sc : mmValues) {
+			//System.out.println(sc.toString());
+			
+			count++;
+			
+			System.out.println("배열 사이즈 : " + count);
+		}
+		
+		List<Object[]> result = mmValues;
+		return result;
+	}
 
 }
