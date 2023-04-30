@@ -33,4 +33,11 @@ public interface ScoreRepository extends JpaRepository<Score, Integer>{
 	    }
 	    return scoreDTOs;
 	}
+	
+	
+	@Query(value = "SELECT s.level, MAX(sc.value), MIN(sc.value) " +
+				   "FROM Score sc " +
+				   "JOIN Student s ON sc.student = s.seq " +
+				   "GROUP BY s.level", nativeQuery = true)
+	public List<Object[]> getMaxAndMinValues();
 }
