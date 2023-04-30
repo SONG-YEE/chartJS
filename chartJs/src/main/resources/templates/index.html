@@ -236,76 +236,76 @@
             });
             
             
-            // 학년별 트랙별 평균 점수
-            getChartData();
-            async function getChartData() {
-              const grade10th = await getChartDataByLevel(10);
-              const grade11th = await getChartDataByLevel(11);
-              const grade12th = await getChartDataByLevel(12);
-              console.log("10학년" , grade10th)
-              console.log("11학년" , grade11th)
-              console.log("12학년" , grade12th)
-              myChart.data.datasets.forEach((dataset) => {
-                console.log("dataset", dataset)
-                console.log(':::LABEL:::', dataset.label)
-                switch(dataset.label) {
-                  case '4':
-                    dataset.data = [grade10th[3][1], grade11th[3][1], grade12th[3][1]]
-                    break;
-                  case '3':
-                    dataset.data = [grade10th[2][1], grade11th[2][1], grade12th[2][1]]
-                    break;
-                  case '2':
-                    dataset.data = [grade10th[1][1], grade11th[1][1], grade12th[1][1]]
-                    break;
-                  case '1':
-                    dataset.data = [grade10th[0][1], grade11th[0][1], grade12th[0][1]]
-                    break;
-                }
-                
-              });
-              myChart.update();
-            }
+    // 학년별 트랙별 평균 점수
+    getChartData();
+    async function getChartData() {
+      const grade10th = await getChartDataByLevel(10);
+      const grade11th = await getChartDataByLevel(11);
+      const grade12th = await getChartDataByLevel(12);
+      console.log("10학년" , grade10th)
+      console.log("11학년" , grade11th)
+      console.log("12학년" , grade12th)
+      myChart.data.datasets.forEach((dataset) => {
+        console.log("dataset", dataset)
+        console.log(':::LABEL:::', dataset.label)
+        switch(dataset.label) {
+          case '4':
+            dataset.data = [grade10th[3][1], grade11th[3][1], grade12th[3][1]]
+            break;
+          case '3':
+            dataset.data = [grade10th[2][1], grade11th[2][1], grade12th[2][1]]
+            break;
+          case '2':
+            dataset.data = [grade10th[1][1], grade11th[1][1], grade12th[1][1]]
+            break;
+          case '1':
+            dataset.data = [grade10th[0][1], grade11th[0][1], grade12th[0][1]]
+            break;
+        }
+        
+      });
+      myChart.update();
+    }
 
-            async function getChartDataByLevel(level) {
-              const result = await fetch(`http://localhost:8080/chart/${level}`, {
-                  method: 'get'
-              })
-              const response = await result.json();
-              console.log(response)
-              return response;
-            }
+    async function getChartDataByLevel(level) {
+      const result = await fetch(`http://localhost:8080/chart/${level}`, {
+          method: 'get'
+      })
+      const response = await result.json();
+      console.log(response)
+      return response;
+    }
 
 
-            // 학년별 최고/최저 점수
-            getCharValue();
-            async function getCharValue() {
-              const maxAndMinValues = await getChartMaxAndMinValues();
-              console.log("값 확인이용" , maxAndMinValues)
-              myChart.data.datasets.forEach((dataset) => {
-                console.log("dataset", dataset)
-                console.log(':::LABEL:::', dataset.label)
-                switch(dataset.label) {
-                  case 'MAX':
-                    dataset.data = [maxAndMinValues[0][1], maxAndMinValues[1][1], maxAndMinValues[2][1]]
-                    break;
-                  case 'MIN':
-                    dataset.data = [maxAndMinValues[0][2], maxAndMinValues[1][2], maxAndMinValues[2][2]]
-                    break;                  
-                }
-                
-              });
-              myChart.update();
-            }
+    // 학년별 최고/최저 점수
+    getCharValue();
+    async function getCharValue() {
+      const maxAndMinValues = await getChartMaxAndMinValues();
+      console.log("값 확인이용" , maxAndMinValues)
+      myChart.data.datasets.forEach((dataset) => {
+        console.log("dataset", dataset)
+        console.log(':::LABEL:::', dataset.label)
+        switch(dataset.label) {
+          case 'MAX':
+            dataset.data = [maxAndMinValues[0][1], maxAndMinValues[1][1], maxAndMinValues[2][1]]
+            break;
+          case 'MIN':
+            dataset.data = [maxAndMinValues[0][2], maxAndMinValues[1][2], maxAndMinValues[2][2]]
+            break;                  
+        }
+        
+      });
+      myChart.update();
+    }
 
-            async function getChartMaxAndMinValues() {
-              const result = await fetch(`http://localhost:8080/chart/MaxAndMinValues`, {
-                  method: 'get'
-              })
-              const response = await result.json();
-              console.log(response)
-              return response;
-            }
+    async function getChartMaxAndMinValues() {
+      const result = await fetch(`http://localhost:8080/chart/MaxAndMinValues`, {
+          method: 'get'
+      })
+      const response = await result.json();
+      console.log(response)
+      return response;
+    }
 
     // 학년별 학생 리스트 구현
     const tabLabels = document.querySelectorAll("#tabs li");
