@@ -136,13 +136,13 @@
         <section id="tab-contents">
           <div id="tab1" class="tab-contents active">
             <div style="display: flex; justify-content: space-around;">
-              <div style="width: 5%;">No</div>
-              <div style="width: 14%;">Name</div>
-              <div style="width: 10%;">Gender</div>
-              <div style="width: 10%;">Level</div>
-              <div style="width: 5%;">Track</div>
-              <div style="width: 30%;">Lecture</div>
-              <div style="width: 14%;">Score</div>
+              <div style="width: 5%;"></div>
+              <div style="width: 14%;"></div>
+              <div style="width: 10%;"></div>
+              <div style="width: 10%;"></div>
+              <div style="width: 5%;"></div>
+              <div style="width: 30%;"></div>
+              <div style="width: 14%;"></div>
             </div>
             <span class="contents"></span>
             <!-- <p>These are the contents of tab 1.</p> -->
@@ -208,19 +208,19 @@
                 },
 
                 {
-                    label: 'Parker',
-                    data: [12, 19, 3, 5, 2, 4],
-                    backgraoundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 0.2)',
+                    label: 'MAX',
+                    data: [12, 19, 3],
+                    backgraoundColor: 'rgba(233, 93, 231, 2)',
+                    borderColor: 'rgba(233, 93, 231, 2)',
                     borderWidth: 1
                 },
 
                 {
-                    label: 'Alice',
-                    data: [12, 35, 3, 23, 56, 3],
-                    backgraoundColor: 'rgba(233, 93, 231, 2)',
-                    borderColor: 'rgba(233, 93, 231, 2)',
-                    borderWidth: 1
+                    label: 'MIN',
+                    data: [12, 35, 3],
+                    backgraoundColor: 'rgba(255, 99, 170, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 2
                   }
                 ]
               },
@@ -235,6 +235,8 @@
               }
             });
             
+            
+            // 학년별 트랙별 평균 점수
             getChartData();
             async function getChartData() {
               const grade10th = await getChartDataByLevel(10);
@@ -267,6 +269,37 @@
 
             async function getChartDataByLevel(level) {
               const result = await fetch(`http://localhost:8080/chart/${level}`, {
+                  method: 'get'
+              })
+              const response = await result.json();
+              console.log(response)
+              return response;
+            }
+
+
+            // 학년별 최고/최저 점수
+            getCharValue();
+            async function getCharValue() {
+              const maxAndMinValues = await getChartMaxAndMinValues();
+              console.log("값 확인이용" , maxAndMinValues)
+              myChart.data.datasets.forEach((dataset) => {
+                console.log("dataset", dataset)
+                console.log(':::LABEL:::', dataset.label)
+                switch(dataset.label) {
+                  case 'MAX':
+                    dataset.data = [maxAndMinValues[0][1], maxAndMinValues[1][1], maxAndMinValues[2][1]]
+                    break;
+                  case 'MIN':
+                    dataset.data = [maxAndMinValues[0][2], maxAndMinValues[1][2], maxAndMinValues[2][2]]
+                    break;                  
+                }
+                
+              });
+              myChart.update();
+            }
+
+            async function getChartMaxAndMinValues() {
+              const result = await fetch(`http://localhost:8080/chart/MaxAndMinValues`, {
                   method: 'get'
               })
               const response = await result.json();
@@ -324,70 +357,80 @@
       });
     }
 
-    function renderIntialData(dataList) {
-      const elementContents = document.querySelector('.contents');
-      const elementContentsString = dataList.filter((v, i) => v.page === 1).map(function(vv, ii) {
-        return `
-          <div style="display: flex; justify-content: space-around;">
-            <div style="width: 5%;">${ii + 1}</div>
-            <div style="width: 14%;">${vv.name}</div>
-            <div style="width: 10%;">${vv.gender}</div>
-            <div style="width: 10%;">${vv.level}</div>
-            <div style="width: 5%;">${vv.track}</div>
-            <div style="width: 30%;">${vv.title}</div>
-            <div style="width: 14%;">${vv.value}</div>
-          </div>
-        `;
-      }).join('');
-      elementContents.innerHTML = null;
-      elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
-    }
-
-    function renderData(pageNumber, dataList) {
-      console.log('pageNumber', pageNumber)
-      const elementContents = document.querySelector('.contents');
-      const elementContentsString = dataList.filter((v, i) => v.page === Number(pageNumber)).map(function(vv, ii) {
-        return `
-          <div style="display: flex; justify-content: space-around;">
-            <div style="width: 5%;">${ii + 1}</div>
-            <div style="width: 14%;">${vv.name}</div>
-            <div style="width: 10%;">${vv.gender}</div>
-            <div style="width: 10%;">${vv.level}</div>
-            <div style="width: 5%;">${vv.track}</div>
-            <div style="width: 30%;">${vv.title}</div>
-            <div style="width: 14%;">${vv.value}</div>
-          </div>
-        `;
-      }).join('');
-      console.log(elementContentsString)
-      elementContents.innerHTML = null;
-      elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
-    }
+	function renderIntialData(dataList) {
+	  const elementContents = document.querySelector('.contents');
+	  const elementContentsString = `
+	    <table style="width:100%; text-align:center;">
+	      <thead>
+	        <tr>
+	          <th style="width: 5%;">No</th>
+	          <th style="width: 14%;">Name</th>
+	          <th style="width: 10%;">Gender</th>
+	          <th style="width: 10%;">Level</th>
+	          <th style="width: 5%;">Track</th>
+	          <th style="width: 30%;">Title</th>
+	          <th style="width: 14%;">Value</th>
+	        </tr>
+	        <tr><td colspan="7" style="border-bottom: 1px solid black;"></td></tr>
+	      </thead>
+	      <tbody>
+	        ${dataList.filter((v, i) => v.page === 1).map(function(vv, ii) {
+	          return `
+	            <tr>
+	              <td>${ii + 1}</td>
+	              <td>${vv.name}</td>
+	              <td>${vv.gender}</td>
+	              <td>${vv.level}</td>
+	              <td>${vv.track}</td>
+	              <td>${vv.title}</td>
+	              <td>${vv.value}</td>
+	            </tr>
+	          `;
+	        }).join('')}
+	      </tbody>
+	    </table>
+	  `;
+	  elementContents.innerHTML = null;
+	  elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
+	}
+	
+	function renderData(pageNumber, dataList) {
+	  const elementContents = document.querySelector('.contents');
+	  const elementContentsString = `
+	    <table style="width:100%; text-align:center;">
+	      <thead>
+	        <tr>
+	          <th style="width: 5%;">No</th>
+	          <th style="width: 14%;">Name</th>
+	          <th style="width: 10%;">Gender</th>
+	          <th style="width: 10%;">Level</th>
+	          <th style="width: 5%;">Track</th>
+	          <th style="width: 30%;">Title</th>
+	          <th style="width: 14%;">Value</th>
+	        </tr>
+	        <tr><td colspan="7" style="border-bottom: 1px solid black;"></td></tr>
+	      </thead>
+	      <tbody>
+	        ${dataList.filter((v, i) => v.page === Number(pageNumber)).map(function(vv, ii) {
+	          return `
+	            <tr>
+	              <td>${ii + 1}</td>
+	              <td>${vv.name}</td>
+	              <td>${vv.gender}</td>
+	              <td>${vv.level}</td>
+	              <td>${vv.track}</td>
+	              <td>${vv.title}</td>
+	              <td>${vv.value}</td>
+	            </tr>
+	          `;
+	        }).join('')}
+	      </tbody>
+	    </table>
+	  `;
+	  elementContents.innerHTML = null;
+	  elementContents.appendChild(document.createRange().createContextualFragment(elementContentsString));
+	}
 
     </script>
-
-    <!-- 혹시 몰라서 남겨둔 코드
-        <script>
-            const level = 10;
-      
-            fetch(`http://localhost:8080/` + level)
-            .then(response => response.json())
-            .then(data => {
-             const app = document.getElementById('app');
-             const ul = document.createElement('ul');
-              if (!data || !Array.isArray(data) || data.length === 0) {
-              console.log("null");
-              return;
-              }
-              data.forEach(student => {
-              const li = document.createElement('li');
-              li.textContent = `${student[1]} (${student[2]}) (${student[3]}) (${student[4]}) (${student[5]}) (${student[6]})`;
-              ul.appendChild(li);
-              });
-              app.appendChild(ul);
-          })
-            .catch(error => console.error(error));
-          </script>
-    -->
 </body>
 </html>
