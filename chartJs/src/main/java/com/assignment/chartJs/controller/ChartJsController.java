@@ -21,12 +21,7 @@ public class ChartJsController {
 	
 	@Autowired
 	private StudentRepository studentRepository;
-	
-//	@GetMapping("/index")
-//	public String chartView() {
-//		return "index";
-//	}
-	
+		
 	@GetMapping("tabList/{level}")
 	public List<Object[]> getStudentsByLevel(@PathVariable("level") byte level) {
 		
@@ -41,7 +36,12 @@ public class ChartJsController {
 		
 	}
 
-	
+	@GetMapping("chart/MaxAndMinValues")
+	public List<Object[]> getMaxAndMinValues() {
+		
+		return chartJsService.getMaxAndMinValues();
+		
+	}
 //	@GetMapping("/hello")
 //	public String getJson() {
 //		List<Object[]> st = getStudentsByLevel((byte) 10);
