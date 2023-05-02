@@ -350,7 +350,8 @@
     function onClickButtonPagination(dataList) {
       const pageList = document.querySelectorAll('.page-item');
       pageList.forEach(function(element) {
-        element.addEventListener('click', function() {
+        element.addEventListener('click', function(e) {
+			e.preventDefault();
           const pageNumber = element.querySelector('.page-link').innerText;
           renderData(pageNumber, dataList);
         })
